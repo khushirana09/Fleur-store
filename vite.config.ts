@@ -1,7 +1,7 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
+
 
 // https://vite.dev/config/
 import path from 'node:path';
@@ -17,7 +17,7 @@ export default defineConfig({
       '@': path.resolve(dirname, './src'),
     },
   },
-  plugins: [react(), tailwindcss()],
+  plugins: [react()],
   test: {
     projects: [{
       extends: true,

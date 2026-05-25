@@ -2,42 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────────────────
+   FLEUR — Global Stylesheet
+───────────────────────────────────────────────────────── */
+
 @layer base {
-    * {
-        @apply border-rose-200;
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
     }
 
     html {
         @apply scroll-smooth;
-        /* Prevent horizontal scroll on mobile */
         overflow-x: hidden;
     }
 
     body {
-        @apply bg-cream-50 text-mauve-900 font-sans antialiased;
-        /* Prevent horizontal scroll on mobile */
+        background-color: #FFFDF9;
+        color: #270D1F;
+
+        font-family: 'DM Sans', system-ui, sans-serif;
+
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
         overflow-x: hidden;
-        /* Better text rendering on mobile */
         -webkit-text-size-adjust: 100%;
     }
 
     ::selection {
-        @apply bg-rose-200 text-rose-900;
+        background-color: #F5CECC;
+        color: #4D2030;
     }
 
     ::-webkit-scrollbar {
-        @apply w-1;
+        width: 4px;
     }
 
     ::-webkit-scrollbar-track {
-        @apply bg-cream-100;
+        background-color: #FDF6F0;
     }
 
     ::-webkit-scrollbar-thumb {
-        @apply bg-rose-300 rounded-full;
+        background-color: #EFB0B4;
+        border-radius: 9999px;
     }
 
-    /* Better tap targets on mobile */
     button,
     a,
     [role="button"] {
@@ -58,7 +70,6 @@
     }
 
     .heading-section {
-        /* Responsive: smaller on mobile, larger on desktop */
         @apply font-serif font-normal text-mauve-900;
         font-size: clamp(1.75rem, 4vw, 2.5rem);
     }
@@ -67,39 +78,34 @@
         @apply text-[11px] tracking-[0.14em] uppercase font-medium;
     }
 
-    /* ── Buttons — responsive touch targets ── */
+    /* ── Buttons ── */
     .btn-base {
         @apply inline-flex items-center justify-center gap-2 font-sans tracking-[0.08em] uppercase font-medium transition-all duration-200 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400/50;
-        /* Minimum 44px touch target on mobile */
+
         min-height: 44px;
         font-size: clamp(11px, 1.5vw, 13px);
     }
 
     .btn-primary {
-        @apply btn-base bg-rose-600 text-white hover:bg-rose-700 active:bg-rose-800 disabled:bg-rose-300 disabled:cursor-not-allowed;
-        /* Responsive padding */
-        @apply px-6 py-2.5 sm:px-7 sm:py-3;
+        @apply btn-base bg-rose-600 text-white hover:bg-rose-700 active:bg-rose-800 disabled:bg-rose-300 disabled:cursor-not-allowed px-6 py-2.5 sm:px-7 sm:py-3;
     }
 
     .btn-secondary {
-        @apply btn-base border border-rose-300 text-rose-700 hover:bg-rose-50 hover:border-rose-400 active:bg-rose-100 disabled:opacity-40;
-        @apply px-6 py-2.5 sm:px-7 sm:py-3;
+        @apply btn-base border border-rose-300 text-rose-700 hover:bg-rose-50 hover:border-rose-400 active:bg-rose-100 disabled:opacity-40 px-6 py-2.5 sm:px-7 sm:py-3;
     }
 
     .btn-ghost {
-        @apply btn-base text-mauve-500 hover:text-mauve-900 hover:bg-rose-50 disabled:opacity-40;
-        @apply px-3 py-2 sm:px-4;
+        @apply btn-base text-mauve-500 hover:text-mauve-900 hover:bg-rose-50 disabled:opacity-40 px-3 py-2 sm:px-4;
     }
 
-    /* ── Form inputs — mobile-friendly ── */
+    /* ── Inputs ── */
     .input-base {
         @apply w-full bg-white border border-rose-200 rounded-xl text-mauve-900 placeholder:text-mauve-400 focus:outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all duration-200;
-        /* Larger on mobile to prevent zoom on iOS */
+
         font-size: 16px;
         padding: 12px 16px;
     }
 
-    /* On larger screens, normal size */
     @screen sm {
         .input-base {
             font-size: 14px;
@@ -111,11 +117,9 @@
         @apply border-red-400 focus:border-red-400 focus:ring-red-100;
     }
 
-    /* ── Nav — bigger touch targets on mobile ── */
+    /* ── Navbar ── */
     .nav-link {
-        @apply text-[12px] tracking-[0.06em] uppercase text-mauve-500 hover:text-mauve-900 transition-colors duration-200;
-        /* Larger touch area */
-        @apply py-1 px-1;
+        @apply text-[12px] tracking-[0.06em] uppercase text-mauve-500 hover:text-mauve-900 transition-colors duration-200 py-1 px-1;
     }
 
     .nav-link-active {
@@ -123,9 +127,7 @@
     }
 
     .nav-action-btn {
-        @apply relative flex items-center justify-center text-mauve-400 hover:text-mauve-900 hover:bg-rose-50 rounded-full transition-all duration-200;
-        /* 44px touch target on mobile, 36px on desktop */
-        @apply w-10 h-10 sm:w-9 sm:h-9;
+        @apply relative flex items-center justify-center text-mauve-400 hover:text-mauve-900 hover:bg-rose-50 rounded-full transition-all duration-200 w-10 h-10 sm:w-9 sm:h-9;
     }
 
     .nav-badge {
@@ -137,10 +139,15 @@
         @apply bg-white border border-rose-100 rounded-2xl;
     }
 
-    /* ── Skeleton shimmer ── */
+    /* ── Skeleton ── */
     .skeleton {
-        @apply rounded-xl bg-rose-100;
-        background: linear-gradient(90deg, #FAE8E0 25%, #FDF6F0 50%, #FAE8E0 75%);
+        @apply rounded-xl;
+
+        background: linear-gradient(90deg,
+                #FAE8E0 25%,
+                #FDF6F0 50%,
+                #FAE8E0 75%);
+
         background-size: 200% 100%;
         animation: shimmer 1.6s linear infinite;
     }
@@ -150,22 +157,16 @@
         @apply inline-flex items-center rounded-full text-[10px] tracking-[0.06em] uppercase font-medium;
     }
 
-    /* ── Section spacing — responsive ── */
+    /* ── Section spacing ── */
     .section-py {
         @apply py-12 sm:py-16 lg:py-24;
     }
 
-    /* ── Responsive grid helpers ── */
+    /* ── Product Grid ── */
     .product-grid {
         @apply grid gap-3 sm:gap-4 lg:gap-6;
-        /* 2 cols on mobile, 2 on tablet, 3-4 on desktop */
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
 
-    @screen sm {
-        .product-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     @screen lg {
@@ -174,10 +175,10 @@
         }
     }
 
-    /* ── Mobile-safe modal/drawer ── */
+    /* ── Drawer ── */
     .drawer-panel {
         @apply fixed top-0 bottom-0 right-0 z-50;
-        /* Full width on xs, max width on larger */
+
         width: 100%;
         max-width: 100%;
     }
@@ -188,10 +189,10 @@
         }
     }
 
-    /* ── Scrollable tab row (mobile) ── */
+    /* ── Tabs ── */
     .tab-row {
         @apply flex overflow-x-auto scrollbar-hide;
-        /* Prevent tab row from forcing horizontal scroll on page */
+
         -webkit-overflow-scrolling: touch;
     }
 
@@ -202,6 +203,7 @@
 }
 
 @layer utilities {
+
     .scrollbar-hide {
         -ms-overflow-style: none;
         scrollbar-width: none;
@@ -213,17 +215,83 @@
 
     .text-gradient-rose {
         background: linear-gradient(135deg, #C47B8E, #E8A598);
+
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
 
-    /* Safe area padding for notched phones */
     .safe-bottom {
         padding-bottom: env(safe-area-inset-bottom);
     }
 
     .safe-top {
         padding-top: env(safe-area-inset-top);
+    }
+
+    .safe-left {
+        padding-left: env(safe-area-inset-left);
+    }
+
+    .safe-right {
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
+/* ── Keyframes ── */
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes petal {
+
+    0%,
+    100% {
+        transform: rotate(-3deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(3deg) scale(1.03);
     }
 }
