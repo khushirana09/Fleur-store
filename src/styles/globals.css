@@ -1,0 +1,229 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * {
+        @apply border-rose-200;
+    }
+
+    html {
+        @apply scroll-smooth;
+        /* Prevent horizontal scroll on mobile */
+        overflow-x: hidden;
+    }
+
+    body {
+        @apply bg-cream-50 text-mauve-900 font-sans antialiased;
+        /* Prevent horizontal scroll on mobile */
+        overflow-x: hidden;
+        /* Better text rendering on mobile */
+        -webkit-text-size-adjust: 100%;
+    }
+
+    ::selection {
+        @apply bg-rose-200 text-rose-900;
+    }
+
+    ::-webkit-scrollbar {
+        @apply w-1;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-cream-100;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-rose-300 rounded-full;
+    }
+
+    /* Better tap targets on mobile */
+    button,
+    a,
+    [role="button"] {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+@layer components {
+
+    /* ── Layout ── */
+    .container-app {
+        @apply max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8;
+    }
+
+    /* ── Typography ── */
+    .heading-display {
+        @apply font-serif font-normal tracking-tight leading-[1.08];
+    }
+
+    .heading-section {
+        /* Responsive: smaller on mobile, larger on desktop */
+        @apply font-serif font-normal text-mauve-900;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+    }
+
+    .text-label {
+        @apply text-[11px] tracking-[0.14em] uppercase font-medium;
+    }
+
+    /* ── Buttons — responsive touch targets ── */
+    .btn-base {
+        @apply inline-flex items-center justify-center gap-2 font-sans tracking-[0.08em] uppercase font-medium transition-all duration-200 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400/50;
+        /* Minimum 44px touch target on mobile */
+        min-height: 44px;
+        font-size: clamp(11px, 1.5vw, 13px);
+    }
+
+    .btn-primary {
+        @apply btn-base bg-rose-600 text-white hover:bg-rose-700 active:bg-rose-800 disabled:bg-rose-300 disabled:cursor-not-allowed;
+        /* Responsive padding */
+        @apply px-6 py-2.5 sm:px-7 sm:py-3;
+    }
+
+    .btn-secondary {
+        @apply btn-base border border-rose-300 text-rose-700 hover:bg-rose-50 hover:border-rose-400 active:bg-rose-100 disabled:opacity-40;
+        @apply px-6 py-2.5 sm:px-7 sm:py-3;
+    }
+
+    .btn-ghost {
+        @apply btn-base text-mauve-500 hover:text-mauve-900 hover:bg-rose-50 disabled:opacity-40;
+        @apply px-3 py-2 sm:px-4;
+    }
+
+    /* ── Form inputs — mobile-friendly ── */
+    .input-base {
+        @apply w-full bg-white border border-rose-200 rounded-xl text-mauve-900 placeholder:text-mauve-400 focus:outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all duration-200;
+        /* Larger on mobile to prevent zoom on iOS */
+        font-size: 16px;
+        padding: 12px 16px;
+    }
+
+    /* On larger screens, normal size */
+    @screen sm {
+        .input-base {
+            font-size: 14px;
+            padding: 10px 16px;
+        }
+    }
+
+    .input-error {
+        @apply border-red-400 focus:border-red-400 focus:ring-red-100;
+    }
+
+    /* ── Nav — bigger touch targets on mobile ── */
+    .nav-link {
+        @apply text-[12px] tracking-[0.06em] uppercase text-mauve-500 hover:text-mauve-900 transition-colors duration-200;
+        /* Larger touch area */
+        @apply py-1 px-1;
+    }
+
+    .nav-link-active {
+        @apply text-rose-600 font-medium;
+    }
+
+    .nav-action-btn {
+        @apply relative flex items-center justify-center text-mauve-400 hover:text-mauve-900 hover:bg-rose-50 rounded-full transition-all duration-200;
+        /* 44px touch target on mobile, 36px on desktop */
+        @apply w-10 h-10 sm:w-9 sm:h-9;
+    }
+
+    .nav-badge {
+        @apply absolute -top-0.5 -right-0.5 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center;
+    }
+
+    /* ── Cards ── */
+    .card-base {
+        @apply bg-white border border-rose-100 rounded-2xl;
+    }
+
+    /* ── Skeleton shimmer ── */
+    .skeleton {
+        @apply rounded-xl bg-rose-100;
+        background: linear-gradient(90deg, #FAE8E0 25%, #FDF6F0 50%, #FAE8E0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.6s linear infinite;
+    }
+
+    /* ── Badge ── */
+    .badge {
+        @apply inline-flex items-center rounded-full text-[10px] tracking-[0.06em] uppercase font-medium;
+    }
+
+    /* ── Section spacing — responsive ── */
+    .section-py {
+        @apply py-12 sm:py-16 lg:py-24;
+    }
+
+    /* ── Responsive grid helpers ── */
+    .product-grid {
+        @apply grid gap-3 sm:gap-4 lg:gap-6;
+        /* 2 cols on mobile, 2 on tablet, 3-4 on desktop */
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @screen sm {
+        .product-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @screen lg {
+        .product-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+    }
+
+    /* ── Mobile-safe modal/drawer ── */
+    .drawer-panel {
+        @apply fixed top-0 bottom-0 right-0 z-50;
+        /* Full width on xs, max width on larger */
+        width: 100%;
+        max-width: 100%;
+    }
+
+    @screen sm {
+        .drawer-panel {
+            max-width: 420px;
+        }
+    }
+
+    /* ── Scrollable tab row (mobile) ── */
+    .tab-row {
+        @apply flex overflow-x-auto scrollbar-hide;
+        /* Prevent tab row from forcing horizontal scroll on page */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tab-row button,
+    .tab-row a {
+        @apply flex-shrink-0;
+    }
+}
+
+@layer utilities {
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
+    .text-gradient-rose {
+        background: linear-gradient(135deg, #C47B8E, #E8A598);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Safe area padding for notched phones */
+    .safe-bottom {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .safe-top {
+        padding-top: env(safe-area-inset-top);
+    }
+}
