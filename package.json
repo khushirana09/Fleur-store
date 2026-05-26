@@ -27,6 +27,7 @@
     "currency.js": "^2.0.4",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.20",
+    "firebase": "^12.13.0",
     "framer-motion": "^12.38.0",
     "immer": "^11.1.7",
     "libphonenumber-js": "^1.12.42",

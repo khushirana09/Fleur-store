@@ -1,19 +1,10 @@
 import { useCallback } from 'react'
 import { useAppSelector, useAppDispatch } from '@/app/hooks'
 import { setCredentials, setLoading, logout, updateUser } from '@/features/auth/authSlice'
+import { auth, googleProvider } from '@/lib/firebase/firebase'
+import { signInWithPopup } from 'firebase/auth'
 import type { LoginFormData } from '@/lib/utils/validators'
 import type { User } from '@/types/auth.types'
-
-export interface AuthState {
-  isAuthenticated: boolean
-  user: {
-    id: string
-    email: string
-    name: string
-    avatar?: string
-  } | null
-  isLoading: boolean
-}
 
 export interface RegisterFormData {
   firstName: string
@@ -24,13 +15,12 @@ export interface RegisterFormData {
 }
 
 export function useAuth() {
-  const auth = useAppSelector((state) => state.auth)
+  const auth_state = useAppSelector((state) => state.auth)
   const dispatch = useAppDispatch()
-  
+
   const login = useCallback(async (data: LoginFormData) => {
     dispatch(setLoading(true))
     try {
-      // Simulate API call - replace with actual API endpoint
       const mockUser: User = {
         id: '1',
         email: data.email,
@@ -38,7 +28,6 @@ export function useAuth() {
         lastName: 'User',
         role: 'user',
         createdAt: new Date().toISOString(),
-        // Add a welcome message and promo for Fleur
         welcomeMessage: 'Welcome to Fleur! Use code FLEUR10 for 10% off your first order.'
       } as User
       dispatch(setCredentials({
@@ -53,10 +42,39 @@ export function useAuth() {
     }
   }, [dispatch])
 
+  // ── NEW: Google login ──
+  const loginWithGoogle = useCallback(async () => {
+    dispatch(setLoading(true))
+    try {
+      const result = await signInWithPopup(auth, googleProvider)
+      const firebaseUser = result.user
+
+      const nameParts = (firebaseUser.displayName ?? 'Fleur User').split(' ')
+      const googleUser: User = {
+        id: firebaseUser.uid,
+        email: firebaseUser.email ?? '',
+        firstName: nameParts[0] ?? 'Fleur',
+        lastName: nameParts.slice(1).join(' ') || 'User',
+        avatar: firebaseUser.photoURL ?? undefined,
+        role: 'user',
+        createdAt: new Date().toISOString(),
+      }
+
+      dispatch(setCredentials({
+        user: googleUser,
+        token: await firebaseUser.getIdToken(),
+        refreshToken: firebaseUser.refreshToken,
+      }))
+    } catch (error) {
+      console.error('Google login failed:', error)
+    } finally {
+      dispatch(setLoading(false))
+    }
+  }, [dispatch])
+
   const register = useCallback(async (data: RegisterFormData) => {
     dispatch(setLoading(true))
     try {
-      // Simulate API call - replace with actual API endpoint
       const mockUser: User = {
         id: '1',
         email: data.email,
@@ -94,12 +112,13 @@ export function useAuth() {
       dispatch(setLoading(false))
     }
   }, [dispatch])
-  
+
   return {
-    isAuthenticated: auth.isAuthenticated,
-    user: auth.user,
-    isLoading: auth.isLoading,
+    isAuthenticated: auth_state.isAuthenticated,
+    user: auth_state.user,
+    isLoading: auth_state.isLoading,
     login,
+    loginWithGoogle,
     register,
     updateProfile,
     logout: logoutUser,

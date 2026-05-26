@@ -8,11 +8,12 @@ import { PageWrapper } from '@/components/layout/PageWrapper'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import toast from 'react-hot-toast'
 import { loginSchema, type LoginFormData } from '@/lib/utils/validators'
 import { ROUTES } from '@/lib/constants/routes'
 
 export function Login() {
-    const { login, isLoading } = useAuth()
+    const { login, loginWithGoogle, isLoading } = useAuth()
     const [showPass, setShowPass] = useState(false)
 
 
@@ -46,21 +47,29 @@ export function Login() {
                         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                         className="w-full max-w-sm space-y-7"
                     >
-                        {/* Logo */}
-                        <div>
-                            <Link to={ROUTES.HOME} className="flex items-center gap-2 mb-6">
-                                <span className="text-2xl">🌸</span>
-                                <span className="font-serif text-2xl text-rose-700 font-normal tracking-wide">
-                                    Fleur
-                                </span>
-                            </Link>
-                            <h1 className="font-serif text-3xl font-normal text-mauve-900">
-                                Welcome back 🌸
-                            </h1>
-                            <p className="text-mauve-400 text-sm mt-1.5">
-                                Sign in to your Fleur account to continue shopping.
-                            </p>
-                        </div>
+                        {/* Social */}
+                        {[
+                            {
+                                label: 'Continue with Google',
+                                icon: 'G',
+                                onClick: loginWithGoogle
+                            },
+                            {
+                                label: 'Continue with Apple',
+                                icon: '⌘',
+                                onClick: () => toast('Apple Sign-In coming soon 🍎', { icon: '🍎' })
+                            },
+                        ].map(({ label, icon, onClick }) => (
+                            <Button
+                                key={label}
+                                variant="secondary"
+                                fullWidth
+                                onClick={onClick}
+                                leftIcon={<span className="font-semibold text-sm w-5 text-center">{icon}</span>}
+                            >
+                                {label}
+                            </Button>
+                        ))}
 
                         {/* Demo hint */}
                         <div className="flex items-center justify-between bg-white border border-rose-100
