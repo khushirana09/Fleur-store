@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
+import { EmailOtpModal } from '@/components/auth/EmailOtpModal'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -15,6 +16,7 @@ import { ROUTES } from '@/lib/constants/routes'
 export function Login() {
     const { login, loginWithGoogle, isLoading } = useAuth()
     const [showPass, setShowPass] = useState(false)
+    const [otpModalOpen, setOtpModalOpen] = useState(false)
 
 
     const {
@@ -48,28 +50,31 @@ export function Login() {
                         className="w-full max-w-sm space-y-7"
                     >
                         {/* Social */}
-                        {[
-                            {
-                                label: 'Continue with Google',
-                                icon: 'G',
-                                onClick: loginWithGoogle
-                            },
-                            {
-                                label: 'Continue with Apple',
-                                icon: '⌘',
-                                onClick: () => toast('Apple Sign-In coming soon 🍎', { icon: '🍎' })
-                            },
-                        ].map(({ label, icon, onClick }) => (
-                            <Button
-                                key={label}
-                                variant="secondary"
-                                fullWidth
-                                onClick={onClick}
-                                leftIcon={<span className="font-semibold text-sm w-5 text-center">{icon}</span>}
-                            >
-                                {label}
-                            </Button>
-                        ))}
+                        <Button
+                            variant="secondary"
+                            fullWidth
+                            onClick={loginWithGoogle}
+                            leftIcon={<span className="font-semibold text-sm w-5 text-center">G</span>}
+                        >
+                            Continue with Google
+                        </Button>
+
+                        <Button
+                            variant="secondary"
+                            fullWidth
+                            onClick={() => setOtpModalOpen(true)}
+                            leftIcon={<span className="text-sm w-5 text-center">📧</span>}
+                        >
+                            Continue with Email OTP
+                        </Button>
+                        {/* Email OTP Modal */}
+                        <EmailOtpModal
+                            open={otpModalOpen}
+                            onClose={() => setOtpModalOpen(false)}
+                            onSuccess={(email) => {
+                                setOtpModalOpen(false)
+                            }}
+                        />
 
                         {/* Demo hint */}
                         <div className="flex items-center justify-between bg-white border border-rose-100
