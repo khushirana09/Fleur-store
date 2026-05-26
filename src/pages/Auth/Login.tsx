@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
@@ -9,15 +9,18 @@ import { PageWrapper } from '@/components/layout/PageWrapper'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import { useAppDispatch } from '@/app/hooks'
+import { setCredentials } from '@/features/auth/authSlice'
 import toast from 'react-hot-toast'
 import { loginSchema, type LoginFormData } from '@/lib/utils/validators'
 import { ROUTES } from '@/lib/constants/routes'
 
 export function Login() {
+    const navigate = useNavigate()
+    const dispatch = useAppDispatch()
     const { login, loginWithGoogle, isLoading } = useAuth()
     const [showPass, setShowPass] = useState(false)
     const [otpModalOpen, setOtpModalOpen] = useState(false)
-
 
     const {
         register,
@@ -30,11 +33,17 @@ export function Login() {
 
     async function onSubmit(data: LoginFormData) {
         await login(data)
+        navigate('/')
     }
 
     function fillDemo() {
         setValue('email', 'demo@fleur.in')
         setValue('password', 'Demo1234')
+    }
+
+    async function handleGoogleLogin() {
+        await loginWithGoogle()
+        navigate('/')
     }
 
     return (
@@ -49,32 +58,21 @@ export function Login() {
                         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                         className="w-full max-w-sm space-y-7"
                     >
-                        {/* Social */}
-                        <Button
-                            variant="secondary"
-                            fullWidth
-                            onClick={loginWithGoogle}
-                            leftIcon={<span className="font-semibold text-sm w-5 text-center">G</span>}
-                        >
-                            Continue with Google
-                        </Button>
-
-                        <Button
-                            variant="secondary"
-                            fullWidth
-                            onClick={() => setOtpModalOpen(true)}
-                            leftIcon={<span className="text-sm w-5 text-center">📧</span>}
-                        >
-                            Continue with Email OTP
-                        </Button>
-                        {/* Email OTP Modal */}
-                        <EmailOtpModal
-                            open={otpModalOpen}
-                            onClose={() => setOtpModalOpen(false)}
-                            onSuccess={(email) => {
-                                setOtpModalOpen(false)
-                            }}
-                        />
+                        {/* Logo */}
+                        <div>
+                            <Link to={ROUTES.HOME} className="flex items-center gap-2 mb-6">
+                                <span className="text-2xl">🌸</span>
+                                <span className="font-serif text-2xl text-rose-700 font-normal tracking-wide">
+                                    Fleur
+                                </span>
+                            </Link>
+                            <h1 className="font-serif text-3xl font-normal text-mauve-900">
+                                Welcome back 🌸
+                            </h1>
+                            <p className="text-mauve-400 text-sm mt-1.5">
+                                Sign in to your Fleur account to continue shopping.
+                            </p>
+                        </div>
 
                         {/* Demo hint */}
                         <div className="flex items-center justify-between bg-white border border-rose-100
@@ -142,21 +140,26 @@ export function Login() {
                             <div className="flex-1 h-px bg-rose-100" />
                         </div>
 
-                        {/* Social */}
-                        {[
-                            { label: 'Continue with Google', icon: 'G' },
-                            { label: 'Continue with Apple', icon: '⌘' },
-                        ].map(({ label, icon }) => (
+                        {/* ── Only 2 social buttons ── */}
+                        <div className="space-y-3">
                             <Button
-                                key={label}
                                 variant="secondary"
                                 fullWidth
-                                onClick={() => { }}
-                                leftIcon={<span className="font-semibold text-sm w-5 text-center">{icon}</span>}
+                                onClick={handleGoogleLogin}
+                                leftIcon={<span className="font-semibold text-sm w-5 text-center">G</span>}
                             >
-                                {label}
+                                Continue with Google
                             </Button>
-                        ))}
+
+                            <Button
+                                variant="secondary"
+                                fullWidth
+                                onClick={() => setOtpModalOpen(true)}
+                                leftIcon={<span className="text-sm w-5 text-center">📧</span>}
+                            >
+                                Continue with Email OTP
+                            </Button>
+                        </div>
 
                         {/* Register link */}
                         <p className="text-center text-sm text-mauve-400">
@@ -171,8 +174,7 @@ export function Login() {
 
                 {/* ── Right: decorative panel ── */}
                 <div className="hidden lg:flex flex-1 items-center justify-center
-                        bg-gradient-to-br from-rose-50 to-cream-100 relative overflow-hidden">
-                    {/* Background petals */}
+                        bg-gradient-to-br from-rose-50 to-pink-100 relative overflow-hidden">
                     {[
                         { top: '8%', left: '10%', size: 100, opacity: 0.15, delay: 0 },
                         { top: '70%', left: '5%', size: 70, opacity: 0.10, delay: 1 },
@@ -193,7 +195,6 @@ export function Login() {
                         </motion.div>
                     ))}
 
-                    {/* Content */}
                     <div className="relative z-10 text-center space-y-6 max-w-xs px-8">
                         <div className="text-6xl">🌸</div>
                         <h2 className="font-serif text-3xl font-normal text-mauve-900 leading-snug">
@@ -204,8 +205,6 @@ export function Login() {
                             Shop kurtas, sarees, dresses and more — all curated for Indian women
                             who love fashion that feels like them.
                         </p>
-
-                        {/* Feature list */}
                         <ul className="space-y-3 text-left mt-4">
                             {[
                                 '🚚 Free delivery above ₹999',
@@ -222,6 +221,30 @@ export function Login() {
                 </div>
 
             </div>
+
+            {/* ── OTP Modal — outside the form, at bottom of component ── */}
+            <EmailOtpModal
+                open={otpModalOpen}
+                onClose={() => setOtpModalOpen(false)}
+                onVerified={(email) => {
+                    dispatch(setCredentials({
+                        user: {
+                            id: Date.now().toString(),
+                            email: email,
+                            firstName: email.split('@')[0],
+                            lastName: 'User',
+                            role: 'user' as const,
+                            createdAt: new Date().toISOString(),
+                        },
+                        token: 'otp_token_' + Date.now(),
+                        refreshToken: 'otp_refresh_' + Date.now(),
+                    }))
+                    toast.success('Welcome to Fleur! 🌸')
+                    setOtpModalOpen(false)
+                    navigate('/')
+                }}
+            />
+
         </PageWrapper>
     )
 }
