@@ -32,6 +32,9 @@ export function ProductDetail() {
     const { data: product, isLoading, isError } = useProduct(slug ?? '')
     const { data: related = [], isLoading: relLoading } = useRelatedProducts(product?.id ?? '')
 
+    if (isLoading) return <div>Loading...</div>;
+    if (!product) return <div>Product not found</div>;
+
     const { addToCart, isInCart } = useCart()
     const { toggle, isWished } = useWishlist()
 
@@ -64,7 +67,6 @@ export function ProductDetail() {
     }
 
     const wished = isWished(product.id)
-    const _inCart = isInCart(product.id)
     const discount = product.compareAtPrice
         ? calculateDiscount(product.price, product.compareAtPrice)
         : 0
