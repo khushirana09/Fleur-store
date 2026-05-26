@@ -70,7 +70,7 @@ export function ProductDetail() {
             toast.error('Please select a size', { id: 'size-warning' })
             return
         }
-        addToCart(product, selectedSize, product.colors[selectedColor]?.name ?? 'Default', quantity)
+        addToCart(product!, selectedSize, product!.colors[selectedColor]?.name ?? 'Default', quantity)
         setJustAdded(true)
         setTimeout(() => setJustAdded(false), 2000)
     }
