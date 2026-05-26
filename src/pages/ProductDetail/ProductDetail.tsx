@@ -29,15 +29,11 @@ export function ProductDetail() {
     const { slug } = useParams<{ slug: string }>()
     const navigate = useNavigate()
 
+    // ── ALL hooks must come first ──
     const { data: product, isLoading, isError } = useProduct(slug ?? '')
     const { data: related = [], isLoading: relLoading } = useRelatedProducts(product?.id ?? '')
-
-    if (isLoading) return <div>Loading...</div>;
-    if (!product) return <div>Product not found</div>;
-
-    const { addToCart, isInCart } = useCart()
+    const { addToCart } = useCart()
     const { toggle, isWished } = useWishlist()
-
     const [selectedSize, setSelectedSize] = useState<string | null>(null)
     const [selectedColor, setSelectedColor] = useState(0)
     const [quantity, setQuantity] = useState(1)
@@ -45,26 +41,21 @@ export function ProductDetail() {
     const [activeThumb, setActiveThumb] = useState(0)
     const [justAdded, setJustAdded] = useState(false)
 
-    /* ── Error state ── */
-    if (isError) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-                <p className="text-mauve-500">Product not found.</p>
-                <Button onClick={() => navigate(ROUTES.SHOP)}>Back to Shop</Button>
-            </div>
-        )
-    }
+    // ── Early returns AFTER all hooks ──
+    if (isLoading) return (
+        <div className="container-app py-12">
+            <ProductDetailSkeleton />
+        </div>
+    )
 
-    // Guard: product is possibly undefined
-    if (!product) return <div>Product not found</div>;
-    /* ── Loading ── */
-    if (isLoading || !product) {
-        return (
-            <div className="container-app py-12">
-                <ProductDetailSkeleton />
-            </div>
-        )
-    }
+    if (isError) return (
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+            <p className="text-mauve-500">Product not found.</p>
+            <Button onClick={() => navigate(ROUTES.SHOP)}>Back to Shop</Button>
+        </div>
+    )
+
+    if (!product) return <div>Product not found</div>
 
     const wished = isWished(product.id)
     const discount = product.compareAtPrice

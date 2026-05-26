@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
@@ -12,7 +12,6 @@ import { loginSchema, type LoginFormData } from '@/lib/utils/validators'
 import { ROUTES } from '@/lib/constants/routes'
 
 export function Login() {
-    const location = useLocation()
     const { login, isLoading } = useAuth()
     const [showPass, setShowPass] = useState(false)
 
