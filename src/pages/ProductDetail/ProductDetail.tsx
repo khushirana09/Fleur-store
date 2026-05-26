@@ -412,6 +412,7 @@ export function ProductDetail() {
                         </div>
                     </section>
                 )}
+
             </div>
         </PageWrapper>
     )
