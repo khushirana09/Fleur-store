@@ -34,7 +34,7 @@ export function Navbar() {
     const [searchValue, setSearchValue] = useState('')
 
     const searchRef = useRef<HTMLDivElement>(null)
-    useClickOutside(searchRef, () => setSearchOpen(false), searchOpen)
+    useClickOutside<HTMLDivElement>(searchRef, () => setSearchOpen(false), searchOpen)
     const debouncedSearch = useDebounce(searchValue, 400)
 
     function handleSearchSubmit(e: React.FormEvent) {

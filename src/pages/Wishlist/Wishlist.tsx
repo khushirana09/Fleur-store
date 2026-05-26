@@ -13,7 +13,7 @@ import toast from 'react-hot-toast'
 
 export function Wishlist() {
     const navigate = useNavigate()
-    const { wishlistProducts, count, remove, clear } = useWishlist()
+    const { wishlistProducts, count, remove: _remove, clear } = useWishlist()
     const { addToCart } = useCart()
 
     function handleMoveAllToBag() {

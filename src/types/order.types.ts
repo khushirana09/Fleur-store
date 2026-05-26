@@ -1,3 +1,4 @@
+export type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
 export interface ApiResponse<T> {
   data: T
   message: string

@@ -16,7 +16,7 @@ export function Login() {
     const { login, isLoading } = useAuth()
     const [showPass, setShowPass] = useState(false)
 
-    const from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? ROUTES.HOME
+    const _from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? ROUTES.HOME
 
     const {
         register,

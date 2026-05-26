@@ -1,3 +1,4 @@
+export { Home as HomePage } from "./Home/Home";
 export * from './Auth'
 export * from './Cart'
 export * from './Checkout'

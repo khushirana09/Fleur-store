@@ -17,7 +17,7 @@ const fadeUp = {
     hidden: { opacity: 0, y: 24 },
     visible: {
         opacity: 1, y: 0,
-        transition: { duration: 0.55, ease: 'easeInOut' },
+        transition: { duration: 0.55, ease: 'easeInOut' as const },
     },
 }
 
@@ -45,7 +45,7 @@ export function Home() {
         >
 
             {/* ── HERO ── */}
-            <section className="relative overflow-hidden bg-linear-to-br from-rose-50 via-cream-50 to-mauve-50 min-h-[88vh] flex items-center">
+            <section className="relative overflow-hidden bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 min-h-[88vh] flex items-center">
                 {/* Decorative background petals */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden">
                     {[
@@ -58,7 +58,7 @@ export function Home() {
                         <motion.div
                             key={i}
                             animate={{ rotate: [0, 15, 0], scale: [1, 1.05, 1] }}
-                            transition={{ duration: 8 + i * 2, repeat: Infinity, ease: 'easeInOut', delay: p.delay }}
+                            transition={{ duration: 8 + i * 2, repeat: Infinity, ease: 'easeInOut' as const, delay: p.delay }}
                             className="absolute text-rose-300"
                             style={{
                                 top: p.top, left: (p as any).left, right: (p as any).right,
@@ -153,7 +153,7 @@ export function Home() {
                             <div className="relative w-full max-w-sm">
                                 {/* Main product card */}
                                 <div className="bg-white rounded-3xl border border-rose-100 p-6 shadow-sm">
-                                    <div className="aspect-3/4 bg-linear-to-br from-rose-50 to-cream-100
+                                    <div className="aspect-[3/4] bg-gradient-to-br from-rose-50 to-pink-100
                                   rounded-2xl flex items-center justify-center text-[120px]
                                   mb-4 animate-petal">
                                         🥻
@@ -175,7 +175,7 @@ export function Home() {
                                 {/* Floating card 1 */}
                                 <motion.div
                                     animate={{ y: [0, -8, 0] }}
-                                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' as const }}
                                     className="absolute -top-4 -right-6 bg-white border border-rose-100
                              rounded-2xl px-4 py-3 shadow-sm"
                                 >
@@ -187,7 +187,7 @@ export function Home() {
                                 {/* Floating card 2 */}
                                 <motion.div
                                     animate={{ y: [0, 8, 0] }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' as const, delay: 1 }}
                                     className="absolute -bottom-4 -left-6 bg-white border border-rose-100
                              rounded-2xl px-4 py-3 shadow-sm"
                                 >

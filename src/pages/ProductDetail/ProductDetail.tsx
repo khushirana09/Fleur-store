@@ -52,6 +52,8 @@ export function ProductDetail() {
         )
     }
 
+    // Guard: product is possibly undefined
+    if (!product) return <div>Product not found</div>;
     /* ── Loading ── */
     if (isLoading || !product) {
         return (
@@ -62,7 +64,7 @@ export function ProductDetail() {
     }
 
     const wished = isWished(product.id)
-    const inCart = isInCart(product.id)
+    const _inCart = isInCart(product.id)
     const discount = product.compareAtPrice
         ? calculateDiscount(product.price, product.compareAtPrice)
         : 0

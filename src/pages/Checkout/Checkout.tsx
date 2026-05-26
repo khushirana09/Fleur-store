@@ -34,7 +34,7 @@ export function Checkout() {
     const { items, summary } = useCart()
     const { step, shippingData, shippingMethod, paymentMethod,
         isPlacingOrder, goToStep, handleShippingSubmit, placeOrder } = useCheckout()
-    const checkout = useAppSelector((s) => s.checkout)
+    const _checkout = useAppSelector((s) => s.checkout)
 
     const {
         register,

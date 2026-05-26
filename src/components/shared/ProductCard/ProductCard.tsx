@@ -135,7 +135,7 @@ export function ProductCard({
         <motion.article
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ delay: index * 0.05, duration: 0.4 }}
             className={cn('group', className)}
         >
             <Link to={productPath(product.slug)} className="block">
@@ -197,7 +197,7 @@ export function ProductCard({
                     <div
                         className="absolute bottom-0 left-0 right-0 p-3
                        translate-y-full group-hover:translate-y-0
-                       transition-transform duration-300 ease-out"
+                       transition-transform duration-300"
                     >
                         <button
                             onClick={handleQuickAdd}
