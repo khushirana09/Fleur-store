@@ -83,9 +83,11 @@ export function Navbar() {
                             <NavLink
                                 key={link.label}
                                 to={link.href}
-                                className={({ isActive }) =>
-                                    cn('nav-link whitespace-nowrap', isActive && 'nav-link-active')
-                                }
+                                className={({ isActive }) => {
+                                    // Also highlight when on /shop regardless of query params
+                                    const onShop = link.href.startsWith('/shop') && window.location.pathname === '/shop'
+                                    return cn('nav-link whitespace-nowrap', (isActive || onShop) && 'nav-link-active')
+                                }}
                             >
                                 {link.label}
                             </NavLink>

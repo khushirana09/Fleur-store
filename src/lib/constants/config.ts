@@ -44,8 +44,7 @@ export const CATEGORY_EMOJIS: Record<string, string> = {
 }
 
 export const PROMO_CODES: Record<string, number> = {
-  FLEUR10:   10,
-  NEWLOOK20: 20,
-  BLOOMS15:  15,
-  WELCOME10: 10,
+  FLEUR10: 10,   // 10% off
+  SAVE20: 20,    // 20% off
+  WELCOME: 15,   // 15% off
 }

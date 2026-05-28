@@ -36,6 +36,7 @@ export function PageWrapper({ title, description, ogImage, canonical, children }
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, ease: 'easeOut' }}
+                className="pb-16 lg:pb-0"
             >
                 {children}
             </motion.div>

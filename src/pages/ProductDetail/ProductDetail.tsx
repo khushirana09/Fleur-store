@@ -118,7 +118,7 @@ export function ProductDetail() {
         >
             {/* Breadcrumb */}
             <div className="border-b border-rose-100">
-                <div className="container-app py-3">
+                <div className="container-app py-3 flex items-center gap-4">
                     <Breadcrumb
                         items={[
                             { label: 'Shop', href: ROUTES.SHOP },
@@ -129,6 +129,14 @@ export function ProductDetail() {
                             { label: product.name },
                         ]}
                     />
+                    {/* ── ADD THIS BACK BUTTON ── */}
+                    <button
+                        type="button"
+                        onClick={() => navigate(-1)}
+                        className="flex items-center gap-1.5 text-[12px] text-mauve-400 hover:text-rose-500 transition-colors shrink-0"
+                    >
+                        <span aria-hidden="true">←</span> Back
+                    </button>
                 </div>
             </div>
 
